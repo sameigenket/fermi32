@@ -56,7 +56,7 @@ always_comb begin
     endcase
     end
 
-    defualt : begin
+    default : begin
         byte_enable = 4'b0000;
     end
     endcase

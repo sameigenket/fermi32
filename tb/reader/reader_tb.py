@@ -1,4 +1,12 @@
 import cocotb
 import random
 
-using cocotb.triggers import Timer
+from cocotb.triggers import Timer
+
+@cocotb.test()
+async def mask_test(dut):
+    assert
+
+@cocotb.test()
+async def shift_test(dut):
+    assert

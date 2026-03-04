@@ -18,8 +18,8 @@ module reader (
 
   always_comb begin : mask_apply
     for (int i = 0; i < 4; i++) begin
-      if (be_mask[i]) begin
-        masked_data[(i*8)+:8] = mem_data[(i*8)+:8];
+      if (byte_enable_mask[i]) begin
+        masked_data[(i*8)+:8] = memory_data[(i*8)+:8];
       end else begin
         masked_data[(i*8)+:8] = 8'h00;
       end
@@ -63,4 +63,3 @@ module reader (
     valid = |be_mask;
   end
 endmodule
-
