@@ -28,6 +28,68 @@ module control (
 
   always_comb begin
     case (op)
+      OPCODE_I_TYPE_LOAD: begin  //I-Type
+        reg_write = 1'b1;
+        imm_source = 3'b000;
+        mem_write = 1'b0;
+        alu_op = 2'b00;
+        alu_source = 1'b1;
+        write_back_source = 2'b01;
+        branch = 1'b0;
+        jump = 1'b0;
+      end
+      OPCODE_I_TYPE_ALU: begin  //ALU I-Type
+        imm_source = 3'b000;
+        alu_source = 1'b1;
+        mem_write = 1'b0;
+        alu_op = 2'b10;
+        write_back_source = 2'b00;
+        branch = 1'b0;
+        jump = 1'b0;
+
+        if (func3 == F3_SLL) begin
+          reg_write = (func7 == F7_SLL_SRL | func7 == F7_SRA) ? 1'b1 : 1'b0;
+        end else if (func3 == F3_SRL_SRA) begin
+          reg_write = (func7 == F7_SLL_SRL | func7 == F7_SRA) ? 1'b1 : 1'b0;
+        end else begin
+          reg_write = 1'b1;
+        end
+      end
+      OPCODE_S_TYPE: begin
+        reg_write = 1'b0;
+        imm_source = 3'b001;
+        mem_write = 1'b1;
+        alu_op = 2'b00;
+        alu_source = 1'b1;
+        branch = 1'b0;
+        jump = 1'b0;
+      end
+      OPCODE_R_TYPE: begin
+        reg_write = 1'b1;
+        imm_source = 3'b001;
+        mem_write = 1'b0;
+        alu_op = 2'b10;
+        alu_source = 1'b0;
+        write_back_source = 2'b00;
+        branch = 1'b0;
+        jump = 1'b0;
+      end
+      OPCODE_B_TYPE: begin
+        reg_write = 1'b0;
+        imm_source = 3'b010;
+        alu_source = 1'b0;
+        mem_write = 1'b0;
+        alu_op = 2'b01;
+        branch = 1'b1;
+        jump = 1'b0;
+        second_add_source = 2'b00;
+      end
+      OPCODE_J_TYPE, OPCODE_J_TYPE_JALR: begin
+
+      end
+      OPCODE_U_TYPE_LUI, OPCODE_U_TYPE_AUIPC: begin
+
+      end
       default: begin
         reg_write = 1'b0;
         mem_write = 1'b0;
